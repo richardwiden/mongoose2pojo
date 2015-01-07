@@ -3,6 +3,70 @@ mongoose2pojo
 
 Converts MongooseJS schemas to POJO (Plain Old Java Object)
 
+## Example usage
+
+```bash
+my@comp:~$ mkdir schemas && cd schemas
+# COPY SCHEMA FILES TO THE ~/schemas DIRECTORY
+my@comp:~/schemas$ npm install mongoose
+my@comp:~/schemas$ npm install mongoose2pojo
+my@comp:~/schemas$ mongoose2pojo *.js
+```
+
+mongoose2pojo expects that your schema files are either nodejs modules or JSON schemas.
+
+## Using as command line executable
+
+```bash
+my@comp:~/code/schemas$ mongoose2pojo image-schema.js
+```
+
+File `image-schema.js`.
+```JS
+var Schema = require("mongoose").Schema;
+
+module.exports = new Schema({
+  ref:  { type: Schema.ObjectId, ref: 'Asset', index: true },
+  time: { type: Date, index: true },
+  type: String
+});
+```
+
+File `ImagePojo.java` gets created:
+```java
+public class Image{
+	private UUID ref;
+	private Date time;
+	private String type;
+	private UUID id;
+	
+	public UUID getRef(){
+		return this.ref;
+	}
+	public void setRef(UUID ref){
+		this.ref = ref;
+	}
+	public Date getTime(){
+		return this.time;
+	}
+	public void setTime(Date time){
+		this.time = time;
+	}
+	public String getType(){
+		return this.type;
+	}
+	public void setType(String type){
+		this.type = type;
+	}
+	public UUID getId(){
+		return this.id;
+	}
+	public void setId(UUID id){
+		this.id = id;
+	}
+}
+```
+
 ## Using as library
 
 ```JS
@@ -43,62 +107,6 @@ public class User{
 	}
 	public void setRegisteredBy(UUID registeredBy){
 		this.registeredBy = registeredBy;
-	}
-	public UUID getId(){
-		return this.id;
-	}
-	public void setId(UUID id){
-		this.id = id;
-	}
-}
-```
-
-## Using as command line executable
-
-```bash
-my@comp:~/code/schemas$ sudo npm install mongoose2pojo -g
-my@comp:~/code/schemas$ mongoose2pojo image-schema.js
-```
-
-File `image-schema.js`.
-```JS
-var Schema = require("mongoose").Schema;
-
-module.exports = new Schema({
-  ref:  { type: Schema.ObjectId, ref: 'Asset', index: true },
-  time: { type: Date, index: true },
-  type: String
-},
-{
-  collection: 'image'
-});
-```
-
-File `ImagePojo.java` gets created:
-```java
-public class Image{
-	private UUID ref;
-	private Date time;
-	private String type;
-	private UUID id;
-	
-	public UUID getRef(){
-		return this.ref;
-	}
-	public void setRef(UUID ref){
-		this.ref = ref;
-	}
-	public Date getTime(){
-		return this.time;
-	}
-	public void setTime(Date time){
-		this.time = time;
-	}
-	public String getType(){
-		return this.type;
-	}
-	public void setType(String type){
-		this.type = type;
 	}
 	public UUID getId(){
 		return this.id;
