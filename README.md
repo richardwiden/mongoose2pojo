@@ -13,12 +13,14 @@ my@comp:~/schemas$ sudo npm install mongoose2pojo -g
 my@comp:~/schemas$ mongoose2pojo *.js
 ```
 
-mongoose2pojo expects that your schema files are either nodejs modules or JSON's.
+mongoose2pojo expects that your schema files are nodejs modules exposing `Schema` object to `module.exports`.
 
 ## Using as command line executable
 
 ```bash
 my@comp:~/code/schemas$ mongoose2pojo image-schema.js
+Created POJO file. Size: 1797	 /home/my/schemas/ImagePojo.java
+
 ```
 
 File `image-schema.js`.
@@ -29,42 +31,47 @@ module.exports = new Schema({
   ref:  { type: Schema.ObjectId, ref: 'Asset', index: true },
   time: { type: Date, index: true },
   type: String
-});
+}, { collection: 'myimage' });
 ```
 
 File `ImagePojo.java` gets created:
 ```java
-public class Image{
+import java.util.Date;
+import java.util.UUID;
+import java.util.Map;
+
+public class Myimage{
 	private UUID ref;
 	private Date time;
 	private String type;
 	private UUID id;
-	
-	public UUID getRef(){
+
+	public UUID getRef() {
 		return this.ref;
 	}
-	public void setRef(UUID ref){
+	public void setRef(UUID ref) {
 		this.ref = ref;
 	}
-	public Date getTime(){
+	public Date getTime() {
 		return this.time;
 	}
-	public void setTime(Date time){
+	public void setTime(Date time) {
 		this.time = time;
 	}
-	public String getType(){
+	public String getType() {
 		return this.type;
 	}
-	public void setType(String type){
+	public void setType(String type) {
 		this.type = type;
 	}
-	public UUID getId(){
+	public UUID getId() {
 		return this.id;
 	}
-	public void setId(UUID id){
+	public void setId(UUID id) {
 		this.id = id;
 	}
 }
+
 ```
 
 ## Using as library
@@ -84,35 +91,50 @@ var javaCodeString = converter.parse({
 
 The resulting `javaCodeString` is:
 ```java
+import java.util.Date;
+import java.util.UUID;
+import java.util.Map;
+
 public class User{
 	private String name;
 	private String login;
 	private UUID registeredBy;
 	private UUID id;
-	
-	public String getName(){
+
+	public String getName() {
 		return this.name;
 	}
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLogin(){
+	public String getLogin() {
 		return this.login;
 	}
-	public void setLogin(String login){
+	public void setLogin(String login) {
 		this.login = login;
 	}
-	public UUID getRegisteredBy(){
+	public UUID getRegisteredBy() {
 		return this.registeredBy;
 	}
-	public void setRegisteredBy(UUID registeredBy){
+	public void setRegisteredBy(UUID registeredBy) {
 		this.registeredBy = registeredBy;
 	}
-	public UUID getId(){
+	public UUID getId() {
 		return this.id;
 	}
-	public void setId(UUID id){
+	public void setId(UUID id) {
 		this.id = id;
 	}
 }
+```
+
+Alternatively you can generate POJO text from js schema file. No files will be created.
+```JS
+var contents = m2p().parseFile(fileName);
+```
+
+Or you can generate POJO file from js schema file.
+A file `ImagePojo.java` will be created right next to the existing schema file.
+```JS
+m2p.convertFile("image-schema.js");
 ```
