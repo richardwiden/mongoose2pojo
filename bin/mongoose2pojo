@@ -19,4 +19,5 @@ args._.forEach(function (fileName) {
   var newFullFileName = path.join(dir, newFileName);
 
   fs.writeFileSync(newFullFileName, newFileContents);
+  console.log("Created POJO file. Size: " + newFileContents.length + "\t " + newFullFileName);
 });
