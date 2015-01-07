@@ -5,7 +5,7 @@ describe("file IO", function () {
   it("should read existing file", function () {
     var text = m2p().parseFile("./test/files/image-schema.js");
 
-    text.should.startWith("public class Image{\n");
+    text.should.containEql("public class Myimage{\n");
     text.should.endWith("}\n");
     text.should.containEql("public String getType()");
     text.should.containEql("public void setType(String type)");

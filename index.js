@@ -4,10 +4,11 @@ var mongoose = require("mongoose");
 var JavaGenerator = require("./java-generator");
 var path = require("path");
 var _s = require("underscore.string");
+var fs = require('fs');
 
 function Converter(options) {
-  this.options = options;
-  this.generator = options.generator || new JavaGenerator(options);
+  this.options = options || {};
+  this.generator = this.options.generator || new JavaGenerator(this.options);
 }
 
 Converter.prototype.parse = function (schemaOrDefinition) {
@@ -22,7 +23,12 @@ Converter.prototype.parse = function (schemaOrDefinition) {
 };
 
 Converter.prototype.parseSchema = function (schema) {
-  this.generator.generateHeader(schema);
+  this.options.className = _s.classify(
+    this.options.className ||
+    schema.options.collection ||
+    Converter.getClassNameFromFileName(this._fileName) ||
+    "ClassName"
+  );
 
   schema.eachPath(function (key, schemaString) {
     this.generator.generateProperty(key, schemaString);
@@ -39,6 +45,10 @@ function replaceAll(str, find, replace, ignorecase) {
 }
 
 Converter.getClassNameFromFileName = function (fileName) {
+  if (!fileName) {
+    return undefined;
+  }
+
   fileName = path.basename(fileName);
   fileName = fileName.split(".")[0];
   fileName = replaceAll(fileName, "schema", "", true);
@@ -47,15 +57,32 @@ Converter.getClassNameFromFileName = function (fileName) {
 };
 
 Converter.prototype.parseFile = function (fileName) {
+  this._fileName = fileName;
   var fileContents;
   try {
-    fileContents = require(path.resolve(process.cwd(), fileName));
-    this.options.className = Converter.getClassNameFromFileName(fileName);
+    fileContents = require(path.resolve(process.cwd(), this._fileName));
   }
   catch (e) {
-    throw new Error("Error reading file " + fileName + ". " + e.stack)
+    throw new Error("Error reading file " + this._fileName + ". " + e.stack)
   }
+
   return this.parse(fileContents);
+};
+
+Converter.convertFile = function (fileName) {
+  var converter = new Converter();
+  var fullFileName = path.resolve(process.cwd(), fileName);
+  var newFileContents = converter.parseFile(fullFileName);
+
+  var dir = path.dirname(fullFileName);
+  var newFileName = converter.options.className + "Pojo.java";
+  var newFullFileName = path.join(dir, newFileName);
+
+  fs.writeFileSync(newFullFileName, newFileContents);
+  return {
+    name: newFullFileName,
+    content: newFileContents
+  };
 };
 
 function mongooseSchemaToPojo(options) {
@@ -64,3 +91,4 @@ function mongooseSchemaToPojo(options) {
 
 module.exports = mongooseSchemaToPojo;
 module.exports.Converter = Converter;
+module.exports.convertFile = Converter.convertFile;

@@ -6,18 +6,9 @@ var args = require('yargs')
   .usage('Usage: $0 [FILE]...')
   .argv;
 
-var fs = require('fs');
-var path = require('path');
+var m2p = require("../");
 
 args._.forEach(function (fileName) {
-  var converter = require("../")();
-  var fullFileName = path.resolve(process.cwd(), fileName);
-  var newFileContents = converter.parseFile(fullFileName);
-
-  var dir = path.dirname(fullFileName);
-  var newFileName = converter.options.className + "Pojo.java";
-  var newFullFileName = path.join(dir, newFileName);
-
-  fs.writeFileSync(newFullFileName, newFileContents);
-  console.log("Created POJO file. Size: " + newFileContents.length + "\t " + newFullFileName);
+  var res = m2p.convertFile(fileName);
+  console.log("Created POJO file. Size: " + res.content.length + "\t " + res.name);
 });

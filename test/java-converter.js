@@ -10,7 +10,7 @@ describe("converter", function () {
 
     var text = parser.parse({ });
 
-    text.should.startWith("public class Image{\n");
+    text.should.containEql("public class Image{\n");
     text.should.endWith("}\n");
   });
 

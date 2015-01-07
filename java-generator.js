@@ -12,7 +12,7 @@ function JavaGenerator(options) {
   this.gettersSetters = "";
 }
 
-JavaGenerator.prototype._appendline = function(line) {
+JavaGenerator.prototype._appendline = function (line) {
   var args = Array.prototype.slice.call(arguments, 1);
 
   args.unshift(line + "\n");
@@ -61,22 +61,22 @@ JavaGenerator.prototype.generateProperty = function (key, schemaType) {
 
   this.variables += this._appendline("private %s %s;", varType, varName);
 
-  this.gettersSetters += this._appendline("public %s get%s(){", varType, _.capitalize(varName));
+  this.gettersSetters += this._appendline("public %s get%s() {", varType, _.capitalize(varName));
   this.gettersSetters += this._appendline("return this.%s;", varName);
   this.gettersSetters += this._appendline("}");
 
-  this.gettersSetters += this._appendline("public void set%s(%s %s){", _.capitalize(varName), varType, varName);
+  this.gettersSetters += this._appendline("public void set%s(%s %s) {", _.capitalize(varName), varType, varName);
   this.gettersSetters += this._appendline("this.%s = %s;", varName, varName);
   this.gettersSetters += this._appendline("}");
 };
 
-JavaGenerator.prototype.generateHeader = function (schema) {
-  this.schema = schema;
-};
-
 JavaGenerator.prototype._generateHeader = function () {
-  this.header = this._appendline("public class %s{",
-    _.classify(this.options.className || (this.schema && this.schema.options.collection) || "ClassName"));
+  this.header = this._appendline("import java.util.Date;");
+  this.header += this._appendline("import java.util.UUID;");
+  this.header += this._appendline("import java.util.Map;");
+  this.header += this._appendline("");
+
+  this.header += this._appendline("public class %s{", this.options.className);
 };
 
 JavaGenerator.prototype._generateFooter = function () {
