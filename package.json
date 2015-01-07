@@ -1,0 +1,31 @@
+{
+  "name": "mongoose2pojo",
+  "version": "1.0.0",
+  "description": "Mongoose schema to POJO convertor",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive --require should test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none for now"
+  },
+  "keywords": [
+    "mongoose",
+    "schema",
+    "DTO",
+    "POJO",
+    "JSON"
+  ],
+  "author": "Vasyl Boroviak",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^4.4.2"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "mongoose": "^3.8.21",
+    "underscore.string": "^2.4.0"
+  }
+}
