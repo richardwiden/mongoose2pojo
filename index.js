@@ -1,7 +1,7 @@
 "use strict";
 
 var mongoose = require("mongoose");
-var JavaGenerator = require("./javaGenerator");
+var JavaGenerator = require("./java-generator");
 var path = require("path");
 var _s = require("underscore.string");
 

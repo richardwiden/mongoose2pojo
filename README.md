@@ -9,11 +9,11 @@ Converts MongooseJS schemas to POJO (Plain Old Java Object)
 my@comp:~$ mkdir schemas && cd schemas
 # COPY SCHEMA FILES TO THE ~/schemas DIRECTORY
 my@comp:~/schemas$ npm install mongoose
-my@comp:~/schemas$ npm install mongoose2pojo
+my@comp:~/schemas$ sudo npm install mongoose2pojo -g
 my@comp:~/schemas$ mongoose2pojo *.js
 ```
 
-mongoose2pojo expects that your schema files are either nodejs modules or JSON schemas.
+mongoose2pojo expects that your schema files are either nodejs modules or JSON's.
 
 ## Using as command line executable
 
