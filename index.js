@@ -3,6 +3,7 @@
 var mongoose = require("mongoose");
 var JavaGenerator = require("./javaGenerator");
 var path = require("path");
+var _s = require("underscore.string");
 
 function Converter(options) {
   this.options = options;
@@ -30,13 +31,29 @@ Converter.prototype.parseSchema = function (schema) {
   return this.generator.value();
 };
 
+function replaceAll(str, find, replace, ignorecase) {
+  var flags = (ignorecase === true) ? "gi" : "g";
+  var reg = new RegExp(find, flags);
+
+  return str.replace(reg, replace);
+}
+
+Converter.getClassNameFromFileName = function (fileName) {
+  fileName = path.basename(fileName);
+  fileName = fileName.split(".")[0];
+  fileName = replaceAll(fileName, "schema", "", true);
+  fileName = _s.classify(fileName);
+  return fileName;
+};
+
 Converter.prototype.parseFile = function (fileName) {
   var fileContents;
   try {
     fileContents = require(path.resolve(process.cwd(), fileName));
+    this.options.className = Converter.getClassNameFromFileName(fileName);
   }
   catch (e) {
-    throw new Error("Error reading file " + fileName + ". " + e)
+    throw new Error("Error reading file " + fileName + ". " + e.stack)
   }
   return this.parse(fileContents);
 };

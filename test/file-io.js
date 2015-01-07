@@ -1,9 +1,9 @@
 "use strict";
 var m2p = require("../");
 
-describe.only("file IO", function () {
+describe("file IO", function () {
   it("should read existing file", function () {
-    var text = m2p().parseFile("./test/files/image.js");
+    var text = m2p().parseFile("./test/files/image-schema.js");
 
     text.should.startWith("public class Image{\n");
     text.should.endWith("}\n");

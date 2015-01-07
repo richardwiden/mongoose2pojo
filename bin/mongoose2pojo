@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+"use strict";
+
+var args = require('yargs')
+  .demand(1)
+  .usage('Usage: $0 [FILE]...')
+  .argv;
+
+var fs = require('fs');
+var path = require('path');
+
+args._.forEach(function (fileName) {
+  var converter = require("../")();
+  var fullFileName = path.resolve(process.cwd(), fileName);
+  var newFileContents = converter.parseFile(fullFileName);
+
+  var dir = path.dirname(fullFileName);
+  var newFileName = converter.options.className + "Pojo.java";
+  var newFullFileName = path.join(dir, newFileName);
+
+  fs.writeFileSync(newFullFileName, newFileContents);
+});
