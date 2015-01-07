@@ -70,8 +70,13 @@ JavaGenerator.prototype.generateProperty = function (key, schemaType) {
   this.gettersSetters += this._appendline("}");
 };
 
+JavaGenerator.prototype.generateHeader = function (schema) {
+  this.schema = schema;
+};
+
 JavaGenerator.prototype._generateHeader = function () {
-  this.header = this._appendline("public class %s{", this.options.className || "ClassName");
+  this.header = this._appendline("public class %s{",
+    _.classify(this.options.className || (this.schema && this.schema.options.collection) || "ClassName"));
 };
 
 JavaGenerator.prototype._generateFooter = function () {

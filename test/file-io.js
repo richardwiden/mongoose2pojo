@@ -1,13 +1,9 @@
 "use strict";
 var m2p = require("../");
 
-describe("file IO", function () {
+describe.only("file IO", function () {
   it("should read existing file", function () {
-    var parser = m2p({
-      className: "Image"
-    });
-
-    var text = parser.parseFile("./test/files/image.js");
+    var text = m2p().parseFile("./test/files/image.js");
 
     text.should.startWith("public class Image{\n");
     text.should.endWith("}\n");

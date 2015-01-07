@@ -21,6 +21,8 @@ Converter.prototype.parse = function (schemaOrDefinition) {
 };
 
 Converter.prototype.parseSchema = function (schema) {
+  this.generator.generateHeader(schema);
+
   schema.eachPath(function (key, schemaString) {
     this.generator.generateProperty(key, schemaString);
   }.bind(this));
