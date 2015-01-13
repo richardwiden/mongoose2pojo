@@ -138,3 +138,7 @@ A file `ImagePojo.java` will be created right next to the existing schema file.
 ```JS
 m2p.convertFile("image-schema.js");
 ```
+
+## Contributions
+
+This is an Open Open Source Software (OOSS). A person will be immediately granted with the repository write access after his first meaningful pull request.
