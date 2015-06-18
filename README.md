@@ -141,4 +141,4 @@ m2p.convertFile("image-schema.js");
 
 ## Contributions
 
-This is an Open Open Source Software (OOSS). A person will be immediately granted with the repository write access after his first meaningful pull request.
+This is an [Open Open Source](http://openopensource.org/) (OOS). A person will be immediately granted with the repository write access after his first meaningful pull request.
